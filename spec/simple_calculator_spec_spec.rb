@@ -87,6 +87,10 @@ RSpec.describe 'SimpleCalculator' do
         expect { calculator.add("//;\n1;-2;3") }.to raise_error(ArgumentError, "negative numbers not allowed: -2")
         expect { calculator.add("//[***]\n-1***2***-3") }.to raise_error(ArgumentError, "negative numbers not allowed: -1, -3")
       end
+
+      it 'throws exception with custom delimiters and negative numbers and hyphen not near number' do
+        expect { calculator.add("//;---\n1;2;-3") }.to raise_error(ArgumentError, "negative numbers not allowed: -3")
+      end
     end
   end
 end
