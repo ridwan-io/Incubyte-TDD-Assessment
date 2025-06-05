@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 require 'rspec'
 require_relative '../lib/simple_calculator'
@@ -69,6 +68,24 @@ RSpec.describe 'SimpleCalculator' do
         expect(calculator.add("//[*][%]\n1*2%3")).to eq(6)
         expect(calculator.add("//[***][###]\n1***2###3")).to eq(6)
         expect(calculator.add("//[a][b][c]\n1a2b3c4")).to eq(10)
+      end
+    end
+
+    context 'with negative numbers' do
+      it 'throws exception for single negative number' do
+        expect { calculator.add("-1") }.to raise_error(ArgumentError, "negative numbers not allowed: -1")
+        expect { calculator.add("1,-2") }.to raise_error(ArgumentError, "negative numbers not allowed: -2")
+      end
+
+      it 'throws exception showing all negative numbers' do
+        expect { calculator.add("-1,-2") }.to raise_error(ArgumentError, "negative numbers not allowed: -1, -2")
+        expect { calculator.add("1,-2,3,-4") }.to raise_error(ArgumentError, "negative numbers not allowed: -2, -4")
+        expect { calculator.add("-5,-10,-15") }.to raise_error(ArgumentError, "negative numbers not allowed: -5, -10, -15")
+      end
+
+      it 'throws exception with custom delimiters and negative numbers' do
+        expect { calculator.add("//;\n1;-2;3") }.to raise_error(ArgumentError, "negative numbers not allowed: -2")
+        expect { calculator.add("//[***]\n-1***2***-3") }.to raise_error(ArgumentError, "negative numbers not allowed: -1, -3")
       end
     end
   end
