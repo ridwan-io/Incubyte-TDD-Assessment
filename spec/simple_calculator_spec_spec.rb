@@ -35,5 +35,20 @@ RSpec.describe 'SimpleCalculator' do
         expect(calculator.add("1,2,3,4,5,6,7,8,9,10")).to eq(55)
       end
     end
+
+    context 'with new lines as delimiters' do
+      it 'handles new lines between numbers' do
+        expect(calculator.add("1\n2,3")).to eq(6)
+        expect(calculator.add("1\n2\n3")).to eq(6)
+        expect(calculator.add("1,2\n3,4")).to eq(10)
+        expect(calculator.add("10\n20\n30")).to eq(60)
+      end
+      it 'handles new lines and comma between numbers' do
+        expect(calculator.add("1\n,2,3")).to eq(6)
+        expect(calculator.add("1\n,2\n,3")).to eq(6)
+        expect(calculator.add("1,2\n,3,4")).to eq(10)
+        expect(calculator.add("10\n,20\n,30")).to eq(60)
+      end
+    end
   end
 end
