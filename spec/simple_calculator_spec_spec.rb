@@ -50,5 +50,26 @@ RSpec.describe 'SimpleCalculator' do
         expect(calculator.add("10\n,20\n,30")).to eq(60)
       end
     end
+
+    context 'with custom delimiters' do
+      it 'supports single character custom delimiters' do
+        expect(calculator.add("//;\n1;2")).to eq(3)
+        expect(calculator.add("//|\n1|2|3")).to eq(6)
+        expect(calculator.add("//*\n1*2*3*4")).to eq(10)
+        expect(calculator.add("//:\n5:10:15")).to eq(30)
+      end
+
+      it 'supports multi-character delimiters' do
+        expect(calculator.add("//[***]\n1***2***3")).to eq(6)
+        expect(calculator.add("//[abc]\n1abc2abc3")).to eq(6)
+        expect(calculator.add("//[##]\n5##10##15")).to eq(30)
+      end
+
+      it 'supports multiple different delimiters' do
+        expect(calculator.add("//[*][%]\n1*2%3")).to eq(6)
+        expect(calculator.add("//[***][###]\n1***2###3")).to eq(6)
+        expect(calculator.add("//[a][b][c]\n1a2b3c4")).to eq(10)
+      end
+    end
   end
 end
